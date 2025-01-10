@@ -17,6 +17,17 @@
         
         // Initialize the prompt
         $scope.prompt = "";
+
+ //initialize the button
+        const mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.text = "Save Preferences";
+        mainButton.enable();
+        mainButton.show();
+        // and make it send the "foods" object (as JSON string) back to the bot
+        mainButton.onClick(function(){
+          window.Telegram.WebApp.sendData(JSON.stringify($scope.foods));
+        })
+
       });
     </script>
   </head>
