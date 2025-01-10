@@ -25,8 +25,7 @@
         mainButton.show();
         // and make it send the settings object as JSON string back to the bot
         mainButton.onClick(function(){
-          alert(1)
-          // window.Telegram.WebApp.sendData(JSON.stringify($scope.settings));
+          window.Telegram.WebApp.sendData(JSON.stringify($scope.settings));
           // window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
         })
 
