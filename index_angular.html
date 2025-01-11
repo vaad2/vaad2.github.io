@@ -1,0 +1,59 @@
+<html ng-app="custom-webapp-ui" lang="en" style="background-color: white">
+  <head>
+    <!-- Load the Telegram Library -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Load the AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+      // Initialize the AngularJS app
+      angular.module("custom-webapp-ui", []).controller('CustomUIController', function CustomUIController($scope) {
+        // Define the settings with ranges and steps, including prompt
+        $scope.settings = [
+                { name: "prompt", value: "", type: "textarea" },
+                { name: "steps", value: 30, min: 1, max: 100, step: 1 },         
+                { name: "cfgscale", value: 1, min: 0, max: 20, step: 0.5 },  
+                { name: "fluxguidancescale", value: 5, min: 1, max: 10, step: 1 },           
+                { name: "images", value: 1, min: 1, max: 4, step: 1 },
+                { name: "width", value: 1024, min: 64, max: 2048, step: 64 },
+                { name: "height", value: 1024, min: 64, max: 2048, step: 64 }
+            ];
+
+        //initialize the button
+        const mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.text = "Save Preferences";
+        mainButton.enable();
+        mainButton.show();
+        // and make it send the settings object as JSON string back to the bot
+        mainButton.onClick(function(){
+          window.Telegram.WebApp.sendData(JSON.stringify($scope.settings));
+          // window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
+        })
+
+      });
+    </script>
+  </head>
+  <body ng-controller="CustomUIController">
+    <!-- Range sliders, number inputs, and textarea for settings -->
+    <div ng-repeat="st in settings">
+      <div style="width: 140px; display: inline-block">{{st.name}} :</div>
+      <textarea ng-if="st.type === 'textarea'" 
+                style="width: 300px; height: 100px;" 
+                ng-model="st.value" 
+                placeholder="Enter your prompt here..."></textarea>
+      <input ng-if="!st.type" 
+             style="display: inline-block; width: 80px;" 
+             type="number" 
+             ng-model="st.value" 
+             min="{{st.min}}" 
+             max="{{st.max}}" 
+             step="{{st.step}}">
+      <input ng-if="!st.type" 
+             style="display: inline-block" 
+             type="range" 
+             min="{{st.min}}" 
+             max="{{st.max}}" 
+             step="{{st.step}}" 
+             ng-model="st.value">
+    </div>
+  </body>
+</html>
